@@ -10,14 +10,20 @@
   --theme-rose-500: hsl(12, 20%, 44%);
   --theme-rose-900: hsl(14, 65%, 9%);
   --common-grid-gap: 20px;
+  --common-border-radius: 10px;
+  --common-button-radius: 25px;
+}
+
+* {
+  font-family: "Red Hat Text", sans-serif;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: "Red Hat Text", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+  color: var(--theme-rose-900);
   background-color: var(--theme-rose-50);
 }
 
@@ -29,25 +35,24 @@ body {
 
 .outer-grid {
   display: grid;
-  grid-template-columns: 2.5fr 300px;
+  grid-template-columns: 2.5fr minmax(300px, 1fr);
   gap: var(--common-grid-gap);
 }
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: var(--common-grid-gap);
 }
 
 .product-grid > div {
-  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .product-grid > h1 {
   grid-column: 1 / -1;
+  font-size: 2.5rem;
 }
 
 .shopping-cart {
