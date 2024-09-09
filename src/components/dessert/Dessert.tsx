@@ -1,4 +1,6 @@
 import { useState } from "react";
+import useSound from "use-sound";
+import addItemSFX from "./add-item.mp3";
 import { formatCurrency } from "../../helpers";
 import "./styles.css";
 
@@ -17,6 +19,7 @@ type Dessert = {
 const Dessert = ({ data }: { data: Dessert }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [productCount, setProductCount] = useState(0);
+  const [play] = useSound(addItemSFX, { volume: 0.3 });
 
   const handleAddToCart = () => {
     setIsAddedToCart(true);
@@ -24,7 +27,12 @@ const Dessert = ({ data }: { data: Dessert }) => {
   };
 
   const incrementCount = () => {
-    setProductCount((prev) => prev + 1);
+    setProductCount((prev) => {
+      if (prev === 0) {
+        play();
+      }
+      return prev + 1;
+    });
   };
 
   const decrementCount = () => {

@@ -1,7 +1,10 @@
 import { useState } from "react";
+import useSound from "use-sound";
+import orderCompleteSFX from "./order-complete.mp3";
 import "./styles.css";
 
 const Cart = () => {
+  const [play] = useSound(orderCompleteSFX, { volume: 0.3 });
   return (
     <aside className='shopping-cart'>
       <h1>Your Cart (0)</h1>
@@ -65,7 +68,9 @@ const Cart = () => {
             This is a <strong>carbon neutral</strong> order
           </p>
         </div>
-        <button className='checkout-button'>Confirm Order</button>
+        <button className='checkout-button' onClick={play}>
+          Confirm Order
+        </button>
       </div>
     </aside>
   );
