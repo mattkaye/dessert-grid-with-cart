@@ -1,4 +1,5 @@
 import Dessert from "./components/dessert/Dessert";
+import Cart from "./components/cart/Cart";
 import { default as dessertData } from "./dessert-data.json";
 import "./styles.css";
 
@@ -12,7 +13,7 @@ function App() {
             <Dessert key={dessert.name} data={dessert} />
           ))}
         </section>
-        <aside className='shopping-cart'>Shopping Cart</aside>
+        <Cart />
       </div>
     </div>
   );

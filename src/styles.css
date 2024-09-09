@@ -27,6 +27,11 @@ body {
   background-color: var(--theme-rose-50);
 }
 
+img {
+  max-width: 100%;
+  font-style: italic;
+}
+
 .app-wrapper {
   max-width: 1440px;
   margin: 0 auto;
@@ -53,13 +58,6 @@ body {
 .product-grid > h1 {
   grid-column: 1 / -1;
   font-size: 2.5rem;
-}
-
-.shopping-cart {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {
