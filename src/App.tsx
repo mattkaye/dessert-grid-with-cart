@@ -11,7 +11,7 @@ function App() {
     <div className='app-wrapper'>
       <div className='outer-grid'>
         <section className='product-grid'>
-          <h1>Desserts 🤤</h1>
+          <h1>Dessert Anyone? 🤤</h1>
           {dessertData.map((dessert) => (
             <Dessert
               key={dessert.name}

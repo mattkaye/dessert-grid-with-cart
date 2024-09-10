@@ -5,11 +5,31 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(168, 168, 168, 0.1);
 
-  h1 {
-    color: var(--theme-red);
-    margin-bottom: 0;
+  > div {
+    display: flex;
+    align-items: center;
+
+    h1 {
+      color: var(--theme-red);
+    }
+
+    .empty-the-cart {
+      margin-left: auto;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #928a88;
+
+      &:hover {
+        color: var(--theme-red);
+      }
+
+      &:after {
+        content: "🗑️";
+        margin-left: 5px;
+      }
+    }
   }
 
   .empty-cart {
@@ -24,6 +44,7 @@
   small {
     color: #928a88;
     text-align: center;
+    padding-bottom: 20px;
   }
 
   .active-cart {
@@ -75,7 +96,6 @@
         border-radius: 100%;
         width: 26px;
         height: 26px;
-        transition: all 100ms linear;
         translate: 0 -50%;
 
         &:hover {
@@ -131,7 +151,6 @@
       padding: 1rem 2rem;
       cursor: pointer;
       margin-top: 20px;
-      transition: all 100ms linear;
       border: none;
 
       &:hover {

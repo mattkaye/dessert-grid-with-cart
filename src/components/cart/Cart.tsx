@@ -9,7 +9,8 @@ const Cart = ({
   cartContents,
   setCartContents,
 }: {
-  setCartContents: Dispatch<SetStateAction<CartItem[]>>;
+  setCartContents: Dispatch<SetStateAction<CartItem>>;
+  cartContents: { [key: string]: { price: number; quantity: number } };
 }) => {
   const [play] = useSound(orderCompleteSFX, { volume: 0.3 });
 
@@ -41,8 +42,12 @@ const Cart = ({
           acc[key] = value;
         }
         return acc;
-      }, {});
+      }, {} as CartItem);
     });
+  };
+
+  const emptyCart = () => {
+    setCartContents({});
   };
 
   const makeCartList = () => {
@@ -79,10 +84,19 @@ const Cart = ({
     return cartList;
   };
 
+  const cartIsEmpty = getCartTotalAndCount().count === 0;
+
   return (
     <aside className='shopping-cart'>
-      <h1>Your Cart ({getCartTotalAndCount().count})</h1>
-      {getCartTotalAndCount().count === 0 ? (
+      <div>
+        <h1>Your Cart ({getCartTotalAndCount().count})</h1>
+        {!cartIsEmpty && (
+          <button className='empty-the-cart' onClick={emptyCart}>
+            Empty Cart
+          </button>
+        )}
+      </div>
+      {cartIsEmpty ? (
         <div className='empty-cart'>
           <img src='/svg/illustration-empty-cart.svg' alt='Empty Cart' />
           <small>Your added items will appear here</small>

@@ -1,7 +1,8 @@
 export type CartItem = {
-  name: string;
-  price: number;
-  quantity: number;
+  [name: string]: {
+    price: number;
+    quantity: number;
+  };
 };
 
 export type DessertItem = {
