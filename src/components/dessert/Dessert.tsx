@@ -1,30 +1,23 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { CartItem, DessertItem } from "../../custom-types";
 import useSound from "use-sound";
 import addItemSFX from "./add-item.mp3";
 import { formatCurrency } from "../../helpers";
 import "./styles.css";
 
-type Dessert = {
-  image: {
-    thumbnail: string;
-    mobile: string;
-    tablet: string;
-    desktop: string;
-  };
-  name: string;
-  category: string;
-  price: number;
-};
-
-const Dessert = ({ data }: { data: Dessert }) => {
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
+const Dessert = ({
+  data,
+  cartContents,
+  setCartContents,
+}: {
+  data: DessertItem;
+  cartContents;
+  setCartContents: Dispatch<SetStateAction<CartItem[]>>;
+}) => {
   const [productCount, setProductCount] = useState(0);
   const [play] = useSound(addItemSFX, { volume: 0.3 });
 
-  const handleAddToCart = () => {
-    setIsAddedToCart(true);
-    incrementCount();
-  };
+  const itemInCart = cartContents[data.name] !== undefined;
 
   const incrementCount = () => {
     setProductCount((prev) => {
@@ -33,13 +26,38 @@ const Dessert = ({ data }: { data: Dessert }) => {
       }
       return prev + 1;
     });
+    setCartContents((prev) => {
+      return {
+        ...prev,
+        [data.name]: {
+          price: data.price,
+          quantity: productCount + 1,
+        },
+      };
+    });
   };
+  useEffect(() => {
+    !itemInCart && setProductCount(0);
+  }, [itemInCart]);
 
   const decrementCount = () => {
     setProductCount((prev) => prev - 1);
-    if (productCount === 1) {
-      setIsAddedToCart(false);
-    }
+
+    setCartContents((prev) => {
+      const newCartContents = {
+        ...prev,
+        [data.name]: {
+          price: data.price,
+          quantity: productCount - 1,
+        },
+      };
+      return Object.entries(newCartContents).reduce((acc, [key, value]) => {
+        if (value.quantity > 0) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+    });
   };
 
   return (
@@ -47,10 +65,10 @@ const Dessert = ({ data }: { data: Dessert }) => {
       <img
         src={data.image.mobile}
         alt={data.name}
-        className={isAddedToCart ? "added-to-cart" : ""}
+        className={itemInCart ? "added-to-cart" : ""}
       />
-      {productCount === 0 ? (
-        <button className='add-to-cart' onClick={handleAddToCart}>
+      {!itemInCart ? (
+        <button className='add-to-cart' onClick={incrementCount}>
           Add to Cart
         </button>
       ) : (
