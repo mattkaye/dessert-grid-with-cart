@@ -31,6 +31,7 @@ const Dessert = ({
             cartContents[data.name]?.quantity > 0
               ? cartContents[data.name].quantity + 1
               : 1,
+          thumbnail: data.image.thumbnail,
         },
       };
     });
@@ -42,6 +43,7 @@ const Dessert = ({
         [data.name]: {
           price: data.price,
           quantity: cartContents[data.name].quantity - 1,
+          thumbnail: data.image.thumbnail,
         },
       };
       return Object.entries(newCartContents).reduce((acc, [name, value]) => {

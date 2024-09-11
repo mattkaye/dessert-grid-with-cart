@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import useSound from "use-sound";
-import { formatCurrency } from "../../helpers";
+import { formatCurrency, getCartTotalAndCount } from "../../helpers";
 import orderCompleteSFX from "./order-complete.mp3";
 import { CartItem } from "../../custom-types";
 import "./styles.css";
@@ -8,25 +8,13 @@ import "./styles.css";
 const Cart = ({
   cartContents,
   setCartContents,
+  setModalOpen,
 }: {
   setCartContents: Dispatch<SetStateAction<CartItem>>;
-  cartContents: { [key: string]: { price: number; quantity: number } };
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  cartContents: CartItem;
 }) => {
   const [play] = useSound(orderCompleteSFX, { volume: 0.3 });
-
-  const getCartTotalAndCount = () => {
-    return Object.keys(cartContents).reduce(
-      (acc, itemName) => {
-        return {
-          total:
-            acc.total +
-            cartContents[itemName].price * cartContents[itemName].quantity,
-          count: acc.count + cartContents[itemName].quantity,
-        };
-      },
-      { total: 0, count: 0 }
-    );
-  };
 
   const handleRemoveItem = (dessertName: string) => {
     setCartContents((prev) => {
@@ -35,6 +23,7 @@ const Cart = ({
         [dessertName]: {
           price: prev[dessertName].price,
           quantity: 0,
+          thumbnail: prev[dessertName].thumbnail,
         },
       };
       return Object.entries(newCartContents).reduce((acc, [key, value]) => {
@@ -84,12 +73,17 @@ const Cart = ({
     return cartList;
   };
 
-  const cartIsEmpty = getCartTotalAndCount().count === 0;
+  const handleOrderPlaced = () => {
+    play();
+    setModalOpen(true);
+  };
+
+  const cartIsEmpty = getCartTotalAndCount(cartContents).count === 0;
 
   return (
     <aside className='shopping-cart'>
       <div>
-        <h1>Your Cart ({getCartTotalAndCount().count})</h1>
+        <h1>Your Cart ({getCartTotalAndCount(cartContents).count})</h1>
         {!cartIsEmpty && (
           <button className='empty-the-cart' onClick={emptyCart}>
             Empty Cart
@@ -106,14 +100,14 @@ const Cart = ({
           <ul>{makeCartList()}</ul>
           <div className='total'>
             <p>Order Total</p>
-            <h3>{formatCurrency(getCartTotalAndCount().total)}</h3>
+            <h3>{formatCurrency(getCartTotalAndCount(cartContents).total)}</h3>
           </div>
           <div className='carbon-neutral'>
             <p>
               This is a <strong>carbon neutral</strong> order
             </p>
           </div>
-          <button className='checkout-button' onClick={() => play()}>
+          <button className='large-button' onClick={handleOrderPlaced}>
             Confirm Order
           </button>
         </div>
